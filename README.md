@@ -1,2 +1,2 @@
 # newsletters
-Desarrollo de newsletters para agriNews
+Desarrollo de newsletters
