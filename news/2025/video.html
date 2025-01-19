@@ -4,8 +4,127 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <style>
+        /* Estilo del fondo oscuro del popup */
+        #popup-video {
+            display: none; /* Oculto por defecto */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8); /* Fondo oscuro semi-transparente */
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Contenedor del contenido del popup */
+        #popup-video .popup-content {
+            position: relative;
+            background: #fff; /* Fondo blanco */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            max-width: 90%;
+            max-height: 90%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Estilo del video */
+        #popup-video video {
+            width: 100%;
+            height: auto;
+            max-height: 70vh; /* Limitar la altura para que no salga del viewport */
+        }
+
+        /* Botón de cerrar */
+        #cerrar-popup {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff4d4d; /* Rojo para el botón de cerrar */
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease;
+        }
+
+        #cerrar-popup:hover {
+            background: #e60000; /* Cambiar a un rojo más oscuro al pasar el mouse */
+        }
+
+    </style>
 </head>
 <body>
-    <iframe width="560" height="315" src="https://www.youtube.com/embed/2eZxDRZ2cLE?si=LYwTlt1sWB73h7WR" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    <!-- Botón para abrir el popup -->
+    <button id="boton-abrir-popup">Abrir Video</button>
+
+    <!-- Popup con el video -->
+    <div id="popup-video">
+        <div class="popup-content">
+            <button id="cerrar-popup">&times;</button>
+            <!-- Iframe para el video de YouTube -->
+            <iframe 
+                id="iframe-video" 
+                width="560" 
+                height="315" 
+                frameborder="0" 
+                allow="autoplay; encrypted-media" 
+                allowfullscreen>
+            </iframe>
+        </div>
+    </div>
+
+
+
+
+    <script>
+        $(document).ready(function () {
+            $('#boton-abrir-popup').on('click', function () {
+                // Mostrar el popup con display: flex
+                $('#popup-video').css('display', 'flex');
+
+                // Establecer la URL del video con autoplay
+                const videoId = 'TU_VIDEO_ID'; // Reemplaza con el ID del video de YouTube
+                const iframe = $('#iframe-video');
+                iframe.attr('src', `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&mute=0`);
+            });
+
+            // Cerrar el popup al hacer clic en el botón de cerrar
+            $('#cerrar-popup').on('click', function () {
+                cerrarPopup();
+            });
+
+            // Cerrar el popup al hacer clic fuera del contenido del popup
+            $('#popup-video').on('click', function (event) {
+                if ($(event.target).is('#popup-video')) {
+                    cerrarPopup();
+                }
+            });
+
+            // Función para cerrar el popup
+            function cerrarPopup() {
+                $('#popup-video').css('display', 'none'); // Ocultar el popup
+
+                // Limpiar la URL del iframe para detener el video
+                $('#iframe-video').attr('src', '');
+            }
+        });
+
+    </script>
 </body>
 </html>
